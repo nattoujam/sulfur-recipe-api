@@ -1,0 +1,230 @@
+openapi: 3.0.3
+info:
+  title: sulfur database api
+  contact:
+    email: Public.kyuuanago@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/
+tags:
+  - name: item
+    description: Itemの操作
+  - name: material
+    description: Materialの操作
+  - name: recipe
+    description: Recipeの操作
+paths:
+  /item:
+    get:
+      tags:
+        - item
+      summary: Itemの取得
+      description: nameで昇順ソートしてます
+      operationId: getItem
+      parameters:
+        - name: nameLike
+          in: query
+          description: nameのlike検索
+          required: false
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemArray"
+              examples:
+                ItemArray:
+                  $ref: "#/components/examples/ItemArrayExample"
+  /material:
+    get:
+      tags:
+        - material
+      summary: Materialの取得
+      description: item.nameで昇順ソートしてます
+      operationId: getMaterial
+      parameters:
+        - name: itemNameLike
+          in: query
+          description: item.nameのlike検索
+          required: false
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MaterialArray"
+              examples:
+                MaterialArray:
+                  $ref: "#/components/examples/MaterialArrayExample"
+  /recipe:
+    get:
+      tags:
+        - recipe
+      summary: Reciepeの取得
+      description: result.nameで昇順ソートしてます
+      operationId: getRecipe
+      parameters:
+        - name: resultNameLike
+          in: query
+          description: result.nameのlike検索
+          required: false
+          explode: false
+          schema:
+            type: string
+        - name: resultId
+          in: query
+          description: result.idの検索
+          required: false
+          explode: false
+          schema:
+            type: string
+        - name: materialItemIds
+          in: query
+          description: material.item.idの検索（カンマつなぎで複数指定可）
+          required: false
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeArray"
+              examples:
+                RecipeArray:
+                  $ref: "#/components/examples/RecipeArrayExample"
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        name:
+          type: string
+        tradeInPrice:
+          type: integer
+        size:
+          type: integer
+    ItemArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/Item"
+    Material:
+      type: object
+      properties:
+        id:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        recipeId:
+          type: integer
+        itemId:
+          type: integer
+        amount:
+          type: integer
+        item:
+          $ref: "#/components/schemas/Item"
+    MaterialArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/Material"
+    Recipe:
+      type: object
+      properties:
+        id:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        resultId:
+          type: integer
+        amount:
+          type: integer
+        result:
+          $ref: "#/components/schemas/Item"
+        materials:
+          $ref: "#/components/schemas/MaterialArray"
+    RecipeArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/Recipe"
+  examples:
+    ItemArrayExample:
+      value:
+        - id: 1
+          createdAt: "2025-02-08T00:00:00.000Z"
+          updatedAt: "2025-02-08T00:00:00.000Z"
+          name: "きのこの天ぷら"
+          tradeInPrice: 60
+          size: 2
+        - id: 2
+          createdAt: "2025-02-08T00:00:00.000Z"
+          updatedAt: "2025-02-08T00:00:00.000Z"
+          name: "ベルベットの鐘"
+          tradeInPrice: 5
+          size: 1
+    MaterialArrayExample:
+      value:
+        - id: 1
+          createdAt: "2025-02-08T00:00:00.000Z"
+          updatedAt: "2025-02-08T00:00:00.000Z"
+          recipeId: 1
+          itemId: 2
+          amount: 8
+          item:
+            id: 2
+            createdAt: "2025-02-08T00:00:00.000Z"
+            updatedAt: "2025-02-08T00:00:00.000Z"
+            name: "ベルベットの鐘"
+            tradeInPrice: 5
+            size: 1
+    RecipeArrayExample:
+      value:
+        - id: 1
+          createdAt: "2025-02-08T00:00:00.000Z"
+          updatedAt: "2025-02-08T00:00:00.000Z"
+          recipeId: 1
+          itemId: 2
+          amount: 8
+          result:
+            - id: 1
+              createdAt: "2025-02-08T00:00:00.000Z"
+              updatedAt: "2025-02-08T00:00:00.000Z"
+              name: "きのこの天ぷら"
+              tradeInPrice: 60
+              size: 2
+          material:
+            - id: 1
+              createdAt: "2025-02-08T00:00:00.000Z"
+              updatedAt: "2025-02-08T00:00:00.000Z"
+              recipeId: 1
+              itemId: 2
+              amount: 8
+              item:
+                id: 2
+                createdAt: "2025-02-08T00:00:00.000Z"
+                updatedAt: "2025-02-08T00:00:00.000Z"
+                name: "ベルベットの鐘"
+                tradeInPrice: 5
+                size: 1
