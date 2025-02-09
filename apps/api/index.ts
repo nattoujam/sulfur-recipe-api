@@ -1,6 +1,8 @@
 import cors from "cors";
-import express, { Request } from "express";
+import express, { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { initialize } from "express-openapi";
+import path from "path";
 
 const app = express();
 const port = 3000;
@@ -16,6 +18,19 @@ const getLog = (path: string, req: Request) => {
 // TODO: 特定のオリジンのみ許可するようにする
 app.use(cors());
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Error handling
+const errorHandler = (err: any, req: any, res: any, next: any) => {
+  console.error(err.stack);
+  res.status(500).send("Internal Server Error");
+};
+
+app.listen(port, () => {
+  console.log(`listen... http://localhost:${port}`);
+});
+
 // Recipe
 
 interface GetRecipeRequest extends Request {
@@ -26,7 +41,7 @@ interface GetRecipeRequest extends Request {
   };
 }
 
-app.get("/recipe", async (req: GetRecipeRequest, res, next) => {
+const getRecipe = async (req: GetRecipeRequest, res: Response, next: any) => {
   getLog("recipe", req);
 
   try {
@@ -87,7 +102,7 @@ app.get("/recipe", async (req: GetRecipeRequest, res, next) => {
   } catch (e) {
     next(e);
   }
-});
+};
 
 // end
 
@@ -99,7 +114,7 @@ interface GetItemRequest extends Request {
   };
 }
 
-app.get("/item", async (req: GetItemRequest, res, next) => {
+const getItem = async (req: GetItemRequest, res: Response, next: any) => {
   getLog("item", req);
 
   try {
@@ -123,7 +138,7 @@ app.get("/item", async (req: GetItemRequest, res, next) => {
   } catch (e) {
     next(e);
   }
-});
+};
 
 // end
 
@@ -134,7 +149,11 @@ interface GetMaterialRequest extends Request {
   };
 }
 
-app.get("/material", async (req: GetMaterialRequest, res, next) => {
+const getMaterial = async (
+  req: GetMaterialRequest,
+  res: Response,
+  next: any
+) => {
   getLog("material", req);
 
   try {
@@ -163,16 +182,18 @@ app.get("/material", async (req: GetMaterialRequest, res, next) => {
   } catch (e) {
     next(e);
   }
-});
+};
 
 // end
 
-// Error handling
-app.use((err: any, req: any, res: any, next: any) => {
-  console.error(err.stack);
-  res.status(500).send("Internal Server Error");
-});
-
-app.listen(port, () => {
-  console.log(`listen... http://localhost:${port}`);
+initialize({
+  app,
+  apiDoc: path.resolve(__dirname, "openapi.yaml"),
+  validateApiDoc: true,
+  operations: {
+    getItem,
+    getMaterial,
+    getRecipe,
+  },
+  errorMiddleware: errorHandler,
 });
