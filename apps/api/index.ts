@@ -4,6 +4,8 @@ import { PrismaClient } from "@prisma/client";
 import { initialize } from "express-openapi";
 import path from "path";
 
+import { toHiragana, toKatakana } from "./utils/japanese";
+
 const app = express();
 const port = 3000;
 
@@ -74,11 +76,22 @@ const getRecipe = async (req: GetRecipeRequest, res: Response, next: any) => {
 
     if (req.query.resultNameLike) {
       Object.assign(where, {
-        result: {
-          name: {
-            contains: `${req.query.resultNameLike}`,
+        OR: [
+          {
+            result: {
+              name: {
+                contains: toHiragana(req.query.resultNameLike),
+              },
+            },
           },
-        },
+          {
+            result: {
+              name: {
+                contains: toKatakana(req.query.resultNameLike),
+              },
+            },
+          },
+        ],
       });
     }
 
@@ -122,9 +135,18 @@ const getItem = async (req: GetItemRequest, res: Response, next: any) => {
 
     if (req.query.nameLike) {
       Object.assign(where, {
-        name: {
-          contains: `${req.query.nameLike}`,
-        },
+        OR: [
+          {
+            name: {
+              contains: toHiragana(req.query.nameLike),
+            },
+          },
+          {
+            name: {
+              contains: toKatakana(req.query.nameLike),
+            },
+          },
+        ],
       });
     }
 
@@ -161,11 +183,22 @@ const getMaterial = async (
 
     if (req.query.itemNameLike) {
       Object.assign(where, {
-        item: {
-          name: {
-            contains: `${req.query.itemNameLike}`,
+        OR: [
+          {
+            item: {
+              name: {
+                contains: toHiragana(req.query.itemNameLike),
+              },
+            },
           },
-        },
+          {
+            item: {
+              name: {
+                contains: toKatakana(req.query.itemNameLike),
+              },
+            },
+          },
+        ],
       });
     }
 
