@@ -9,7 +9,10 @@ const main = async () => {
     update: {},
     create: {
       name: itemName1,
+      price: 10,
       tradeInPrice: 5,
+      healAmount: 5,
+      healSecond: 5,
       size: 1,
     },
   });
@@ -20,7 +23,10 @@ const main = async () => {
     update: {},
     create: {
       name: itemName2,
+      price: 20,
       tradeInPrice: 10,
+      healAmount: 0,
+      healSecond: 0,
       size: 2,
     },
   });
@@ -31,7 +37,10 @@ const main = async () => {
     update: {},
     create: {
       name: itemName3,
+      price: 100,
       tradeInPrice: 50,
+      healAmount: 20,
+      healSecond: 5,
       size: 2,
     },
   });
@@ -42,7 +51,10 @@ const main = async () => {
     update: {},
     create: {
       name: itemName4,
+      price: 120,
       tradeInPrice: 60,
+      healAmount: 20,
+      healSecond: 5,
       size: 2,
     },
   });

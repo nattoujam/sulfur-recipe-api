@@ -176,13 +176,19 @@ components:
           createdAt: "2025-02-08T00:00:00.000Z"
           updatedAt: "2025-02-08T00:00:00.000Z"
           name: "きのこの天ぷら"
-          tradeInPrice: 60
+          price: 130
+          tradeInPrice: 65
+          healAmount: 15
+          healSecond: 4
           size: 2
         - id: 2
           createdAt: "2025-02-08T00:00:00.000Z"
           updatedAt: "2025-02-08T00:00:00.000Z"
           name: "ベルベットの鐘"
+          price: 10
           tradeInPrice: 5
+          healAmount: 1
+          healSecond: 1
           size: 1
     MaterialArrayExample:
       value:
@@ -197,7 +203,10 @@ components:
             createdAt: "2025-02-08T00:00:00.000Z"
             updatedAt: "2025-02-08T00:00:00.000Z"
             name: "ベルベットの鐘"
+            price: 10
             tradeInPrice: 5
+            healAmount: 1
+            healSecond: 1
             size: 1
     RecipeArrayExample:
       value:
@@ -212,7 +221,9 @@ components:
               createdAt: "2025-02-08T00:00:00.000Z"
               updatedAt: "2025-02-08T00:00:00.000Z"
               name: "きのこの天ぷら"
-              tradeInPrice: 60
+              tradeInPrice: 65
+              healAmount: 15
+              healSecond: 4
               size: 2
           material:
             - id: 1
@@ -226,5 +237,8 @@ components:
                 createdAt: "2025-02-08T00:00:00.000Z"
                 updatedAt: "2025-02-08T00:00:00.000Z"
                 name: "ベルベットの鐘"
+                price: 10
                 tradeInPrice: 5
+                healAmount: 1
+                healSecond: 1
                 size: 1
