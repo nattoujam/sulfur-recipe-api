@@ -80,23 +80,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
+                $ref: "#/components/schemas/ErrorResponse"
         500:
           description: fail
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
+                $ref: "#/components/schemas/ErrorResponse"
 
   /material:
     get:
@@ -162,6 +152,63 @@ paths:
               examples:
                 RecipeArray:
                   $ref: "#/components/examples/RecipeArrayExample"
+    post:
+      tags:
+        - recipe
+      summary: Recipeの新規作成
+      description: ""
+      operationId: createRecipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resultId:
+                  type: integer
+                amount:
+                  type: integer
+                  minimum: 1
+                materials:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      itemId:
+                        type: integer
+                      amount:
+                        type: integer
+                        minimum: 1
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                  resultId:
+                    type: integer
+                  amount:
+                    type: integer
+        400:
+          description: fail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: fail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     Item:
@@ -225,6 +272,13 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/Recipe"
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
   examples:
     ItemArrayExample:
       value:
