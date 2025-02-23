@@ -1,15 +1,7 @@
 services:
-  swagger-ui:
-    image: swaggerapi/swagger-ui
-    container_name: "swagger-ui"
-    ports:
-      - 3080:8080
-    volumes:
-      - ../apps/api/openapi.yaml:/openapi.yaml
-    environment:
-      SWAGGER_JSON: /openapi.yaml
   api:
     image: node:22-alpine
+    user: "${UID}:${GID}"
     container_name: "api"
     working_dir: /usr/src/app
     ports:
@@ -17,3 +9,23 @@ services:
     volumes:
       - ../:/usr/src/app
     command: sh -c "npm ci && npm -w database run migrate && npm -w api run dev"
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    user: "${UID}:${GID}"
+    container_name: "swagger-ui"
+    ports:
+      - 3080:8080
+    volumes:
+      - ../apps/api/openapi.yaml:/openapi.yaml
+    environment:
+      SWAGGER_JSON: /openapi.yaml
+  studio:
+    depends_on:
+      - api
+    container_name: "studio"
+    working_dir: /usr/src/app
+    ports:
+      - 5555:5555
+    volumes:
+      - ../:/usr/src/app
+    command: sh -c "npm -w database run studio"
