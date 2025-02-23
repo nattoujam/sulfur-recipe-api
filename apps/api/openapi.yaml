@@ -42,6 +42,62 @@ paths:
               examples:
                 ItemArray:
                   $ref: "#/components/examples/ItemArrayExample"
+    post:
+      tags:
+        - item
+      summary: Itemの新規作成
+      description: ""
+      operationId: createItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: integer
+                tradeInPrice:
+                  type: integer
+                size:
+                  type: integer
+                  minimum: 1
+                healAmount:
+                  type: integer
+                healSecond:
+                  type: integer
+
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        400:
+          description: fail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        500:
+          description: fail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+
   /material:
     get:
       tags:

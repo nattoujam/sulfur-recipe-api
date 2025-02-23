@@ -20,8 +20,15 @@ app.use(express.urlencoded({ extended: true }));
 
 // Error handling
 const errorHandler = (err: any, req: any, res: any, next: any) => {
-  console.error(err.stack);
-  res.status(500).send("Internal Server Error");
+  console.error("ErrorHandler:", err);
+  if (err.status === 400) {
+    res.status(400).json({
+      code: "E1",
+      message: err.errors.map((e: any) => `${e.path} ${e.message}`).join(","),
+    });
+  } else {
+    res.status(500).send("Internal Server Error");
+  }
 };
 
 app.listen(port, () => {
