@@ -1,5 +1,5 @@
 {
-  "name": "sulfur-recipe-api",
+  "name": "sulfur-database-api",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
