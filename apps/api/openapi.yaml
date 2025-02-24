@@ -66,7 +66,7 @@ paths:
                 healAmount:
                   type: integer
                 healSecond:
-                  type: integer
+                  type: number
 
       responses:
         200:
@@ -224,8 +224,14 @@ components:
           type: string
         tradeInPrice:
           type: integer
+        price:
+          type: integer
         size:
           type: integer
+        healAmount:
+          type: integer
+        healSecond:
+          type: number
     ItemArray:
       type: array
       items:

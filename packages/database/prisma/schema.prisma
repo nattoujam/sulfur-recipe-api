@@ -22,7 +22,7 @@ model Item {
   tradeInPrice  Int      @default(0)
   size          Int      @default(1)
   healAmount    Int      @default(0)
-  healSecond    Int      @default(0)
+  healSecond    Float    @default(0)
   recipes       Recipe[]
   materials     Material[]
 }
@@ -49,3 +49,4 @@ model Recipe {
   amount       Int        @default(1)
   materials    Material[]
 }
+
